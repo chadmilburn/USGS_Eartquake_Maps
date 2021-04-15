@@ -1,15 +1,22 @@
-// Create a map object
-var myMap = L.map("map", {
-  center: [37.09, -95.71],
-  zoom: 10
+//// Store API inside queryUrl -using hour data for inital build
+var queryUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson"
+//   preform request on url and retrieve features from GEOJson
+d3.json(queryUrl, function (data) {
+  createFeatures(data.features);
 });
 
-// Add a tile layer
-L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
-  attribution: "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>",
-  tileSize: 512,
-  maxZoom: 18,
-  zoomOffset: -1,
-  id: "mapbox/outdoors-v11",
-  accessToken: API_KEY
-}).addTo(myMap);
+// nested functions to create map
+
+function createFeatures(earthquakeData) {
+  // create pop ups for each location
+  function onEachFeature(feature, layer) {
+    layer.bindPopup("<h3>" + feature.properties.place +
+      "</h3><hr><p>" + new Date(feature.properties.time) + "</p>" + "<p>" + "Mag: " + feature.properties.mag + "</p>");
+  }
+  //Define radius of marker-day 1 activity 6
+  function radiusSize(mag){
+    return mag * 10000;
+  }
+  
+
+}
