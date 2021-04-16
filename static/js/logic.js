@@ -61,21 +61,21 @@ function createMap(earthquakes) {
   var overlayMaps = {
     "Earthquakes": earthquakes,
     "Techtonic Plates": tectonicPlates
-   };
+  };
   // Create our map, giving it the layers to display on load
   var myMap = L.map("map", {
     center: [
       37.09, -95.71
     ],
     zoom: 5,
-    layers: [outdoorsmap, earthquakes,tectonicPlates]
+    layers: [outdoorsmap, earthquakes, tectonicPlates]
   });
-  d3.json(tectonicPlatesURL, function(tData){
+  d3.json(tectonicPlatesURL, function (tData) {
     L.geoJSON(tData, {
       color: "blue",
       weight: 2
     })
-    .addTo(tectonicPlates)
+      .addTo(tectonicPlates)
   })
   // Create a layer control
   // Pass in our baseMaps and overlayMaps
@@ -93,15 +93,34 @@ function createMap(earthquakes) {
     var div = L.DomUtil.create('div', 'info legend'),
       grades = [0, 5, 10, 15, 20],
       labels = []
-
+      colors = ["magenta", "blue", "yellow", "orange", "red"] 
     for (var i = 0; i < grades.length; i++) {
       div.innerHTML +=
-        '<i style=background:' + getColor(grades[i] + 1) + '"></i>' + grades[i] +(grades[i+1] ? '&ndash;' + grades[i+1]+'<br>' : '+')
+        '<i style=background:' + getColor(grades[i] + 1) + '"></i>' + grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+')
     }
     return div
   }
   legend.addTo(myMap)
+  // var legend = L.control({position:"bottomleft"});
+  // legend.onAdd = function(){
+  //   var div = L.DomUtil.create("div", "info legend");
+  //   var limits = [0,5,10,15,20]
+  //   var colors = ["magenta", "blue", "yellow", "orange", "red"]
+  //   var lables = [];
+  //   var legendInfo = "<h1>Earthquake Depth</h1>" +
+  //     "<div class=\"labels\">"+
+  //     "<div class=\"min\">" + limits[0] + "</div>" +
+  //     "<div class=\"max\">" + limits[limits.length + 1] + "</div>" +
+  //     "</div>";
+  //   div.innerHTML = legendInfo
 
+  //   limits.forEach(function(limit, index){
+  //     lables.push("<li style=\"background-color: " + colors[index] + "\"></li>")
+  //   })
+  //   div.innerHTML += "<ul>" + lables.join("") + "</ul>"
+  //   returndiv
+  // }
+  // legend.addTo(myMap)
 
 }
 
